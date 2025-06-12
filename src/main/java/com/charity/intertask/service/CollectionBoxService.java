@@ -1,6 +1,8 @@
 package com.charity.intertask.service;
 
 import com.charity.intertask.dto.CollectionBoxDto;
+import com.charity.intertask.dto.MoneyDto;
+import com.charity.intertask.model.BoxMoney;
 import com.charity.intertask.model.CollectionBox;
 import com.charity.intertask.model.FundraisingEvent;
 import com.charity.intertask.repository.CollectionBoxRepository;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -52,6 +55,33 @@ public class CollectionBoxService {
         }
 
         box.setAssignedEvent(event);
+        return boxRepository.save(box);
+    }
+
+    @Transactional
+    public CollectionBox addMoneyToBox(Long boxId, MoneyDto moneyDto) {
+        CollectionBox box = getBoxById(boxId);
+
+        if (box.getAssignedEvent() == null) {
+            throw new IllegalStateException("Cannot add money to an unassigned collection box");
+        }
+
+        Optional<BoxMoney> existingMoney = box.getMoneyContents().stream()
+                .filter(m -> m.getCurrency() == moneyDto.getCurrency())
+                .findFirst();
+
+        if (existingMoney.isPresent()) {
+            BoxMoney money = existingMoney.get();
+            money.setAmount(money.getAmount().add(moneyDto.getAmount()));
+        } else {
+            BoxMoney newMoney = BoxMoney.builder()
+                    .collectionBox(box)
+                    .currency(moneyDto.getCurrency())
+                    .amount(moneyDto.getAmount())
+                    .build();
+            box.getMoneyContents().add(newMoney);
+        }
+
         return boxRepository.save(box);
     }
 }
