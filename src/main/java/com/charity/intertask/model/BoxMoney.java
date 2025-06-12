@@ -28,6 +28,6 @@ public class BoxMoney {
     @Column(nullable = false)
     private Currency currency;
 
-    @Column(nullable = false, precision = 19, scale = 2)
+    @Column(nullable = false, precision = 8, scale = 2)
     private BigDecimal amount;
 }
