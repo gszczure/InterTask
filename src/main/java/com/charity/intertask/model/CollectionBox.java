@@ -25,4 +25,10 @@ public class CollectionBox {
 
     @OneToMany(mappedBy = "collectionBox", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BoxMoney> moneyContents = new ArrayList<>();
+
+    public boolean isEmpty() {
+        return moneyContents.isEmpty() ||
+                moneyContents.stream()
+                        .allMatch(money -> money.getAmount().signum() == 0);
+    }
 }
