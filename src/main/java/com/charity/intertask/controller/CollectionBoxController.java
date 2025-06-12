@@ -17,9 +17,15 @@ public class CollectionBoxController {
 
     private final CollectionBoxService boxService;
 
+    /**
+     * Dodałem zwwracanie DTO przy rejestracji boxa oraz w endpoincie createEvent, ponieważ w treści zadania
+     * nie było sprecyzowane co dokładnie powinny zwracać te endpoity.
+     * Alternatywnie można zwracać komunikat tekstowy String o pomyślnym zakończeniu operacji.
+     */
     @PostMapping("/register")
     public ResponseEntity<CollectionBoxDto> registerBox() {
         CollectionBox box = boxService.registerBox();
+
 
         CollectionBoxDto responseDto = CollectionBoxDto.builder()
                 .id(box.getId())
@@ -34,5 +40,21 @@ public class CollectionBoxController {
     public ResponseEntity<List<CollectionBoxDto>> getAllBoxes() {
         List<CollectionBoxDto> boxes = boxService.getAllBoxes();
         return ResponseEntity.ok(boxes);
+    }
+
+    @PutMapping("/{id}/assign/{eventId}")
+    public ResponseEntity<CollectionBoxDto> assignBoxToEvent(
+            @PathVariable Long id,
+            @PathVariable Long eventId
+    ) {
+        CollectionBox box = boxService.assignBoxToEvent(id, eventId);
+
+        CollectionBoxDto responseDto = CollectionBoxDto.builder()
+                .id(box.getId())
+                .assigned(true)
+                .empty(box.isEmpty())
+                .build();
+
+        return ResponseEntity.ok(responseDto);
     }
 }

@@ -3,6 +3,7 @@ package com.charity.intertask.service;
 import com.charity.intertask.dto.FundraisingEventDto;
 import com.charity.intertask.model.FundraisingEvent;
 import com.charity.intertask.repository.FundraisingEventRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,5 +25,11 @@ public class FundraisingEventService {
                 .build();
 
         return eventRepository.save(event);
+    }
+
+    @Transactional(readOnly = true)
+    public FundraisingEvent getEventById(Long id) {
+        return eventRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Event not found with id: " + id));
     }
 }
