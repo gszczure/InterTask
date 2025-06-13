@@ -81,6 +81,6 @@ public class CollectionBoxController {
     @PostMapping("/{id}/withdraw")
     public ResponseEntity<String> withdrawFromBox(@PathVariable Long id) {
         boxService.withdrawFromBox(id);
-        return ResponseEntity.ok().body("Wymiania pomyslnie");
+        return ResponseEntity.ok().body("Transaction successful");
     }
 }
