@@ -6,7 +6,6 @@ import com.charity.intertask.model.FundraisingEvent;
 import com.charity.intertask.repository.FundraisingEventRepository;
 import com.charity.intertask.service.IFundraisingEventService;
 import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,14 +14,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class FundraisingEventService implements IFundraisingEventService {
 
     private final FundraisingEventRepository eventRepository;
 
+    public FundraisingEventService(FundraisingEventRepository eventRepository) {
+        this.eventRepository = eventRepository;
+    }
+
     @Transactional
     public FundraisingEvent createEvent(FundraisingEventDto eventDto) {
-        FundraisingEvent event = FundraisingEvent.builder()
+        FundraisingEvent event = new FundraisingEvent.builder()
                 .name(eventDto.getName())
                 .currency(eventDto.getCurrency())
                 .balance(BigDecimal.ZERO)

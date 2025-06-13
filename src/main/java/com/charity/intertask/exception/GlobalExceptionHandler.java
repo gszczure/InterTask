@@ -21,7 +21,7 @@ public class GlobalExceptionHandler {
             EntityNotFoundException ex,
             HttpServletRequest request
     ) {
-        ErrorResponse errorResponse = ErrorResponse.builder()
+        ErrorResponse errorResponse = new ErrorResponse.Builder()
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.NOT_FOUND.value())
                 .error(HttpStatus.NOT_FOUND.getReasonPhrase())
@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
             IllegalStateException ex,
             HttpServletRequest request
     ) {
-        ErrorResponse errorResponse = ErrorResponse.builder()
+        ErrorResponse errorResponse = new ErrorResponse.Builder()
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.BAD_REQUEST.value())
                 .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
@@ -66,7 +66,7 @@ public class GlobalExceptionHandler {
             Exception ex,
             HttpServletRequest request
     ) {
-        ErrorResponse errorResponse = ErrorResponse.builder()
+        ErrorResponse errorResponse = new ErrorResponse.Builder()
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .error(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase())

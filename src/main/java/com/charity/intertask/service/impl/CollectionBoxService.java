@@ -11,7 +11,6 @@ import com.charity.intertask.service.ICollectionBoxService;
 import com.charity.intertask.service.ICurrencyExchangeService;
 import com.charity.intertask.service.IFundraisingEventService;
 import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,12 +20,17 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class CollectionBoxService implements ICollectionBoxService {
 
     private final CollectionBoxRepository boxRepository;
     private final IFundraisingEventService eventService;
     private final ICurrencyExchangeService currencyExchangeService;
+
+    public CollectionBoxService(CollectionBoxRepository boxRepository, IFundraisingEventService eventService, ICurrencyExchangeService currencyExchangeService) {
+        this.boxRepository = boxRepository;
+        this.eventService = eventService;
+        this.currencyExchangeService = currencyExchangeService;
+    }
 
     @Transactional
     public CollectionBox registerBox() {
@@ -80,7 +84,7 @@ public class CollectionBoxService implements ICollectionBoxService {
             BoxMoney money = existingMoney.get();
             money.setAmount(money.getAmount().add(moneyDto.getAmount()));
         } else {
-            BoxMoney newMoney = BoxMoney.builder()
+            BoxMoney newMoney = new BoxMoney.builder()
                     .collectionBox(box)
                     .currency(moneyDto.getCurrency())
                     .amount(moneyDto.getAmount())

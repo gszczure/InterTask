@@ -14,10 +14,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/boxes")
-@RequiredArgsConstructor
 public class CollectionBoxController {
 
     private final ICollectionBoxService boxService;
+
+    public CollectionBoxController(ICollectionBoxService boxService) {
+        this.boxService = boxService;
+    }
 
     /**
      * Dodałem zwwracanie DTO przy rejestracji boxa oraz w endpoincie createEvent oraz w assignBoxToEvent gdzie
@@ -29,7 +32,7 @@ public class CollectionBoxController {
     public ResponseEntity<CollectionBoxDto> registerBox() {
         CollectionBox box = boxService.registerBox();
 
-        CollectionBoxDto responseDto = CollectionBoxDto.builder()
+        CollectionBoxDto responseDto = new CollectionBoxDto.Builder()
                 .id(box.getId())
                 .assigned(false)
                 .empty(true)
@@ -51,7 +54,7 @@ public class CollectionBoxController {
     ) {
         CollectionBox box = boxService.assignBoxToEvent(id, eventId);
 
-        CollectionBoxDto responseDto = CollectionBoxDto.builder()
+        CollectionBoxDto responseDto = new CollectionBoxDto.Builder()
                 .id(box.getId())
                 .assigned(true)
                 .empty(box.isEmpty())

@@ -1,18 +1,12 @@
 package com.charity.intertask.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "collection_boxes")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class CollectionBox {
 
     @Id
@@ -25,6 +19,39 @@ public class CollectionBox {
 
     @OneToMany(mappedBy = "collectionBox", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BoxMoney> moneyContents = new ArrayList<>();
+
+    public CollectionBox() {
+    }
+
+    public CollectionBox(Long id, FundraisingEvent assignedEvent, List<BoxMoney> moneyContents) {
+        this.id = id;
+        this.assignedEvent = assignedEvent;
+        this.moneyContents = moneyContents;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public FundraisingEvent getAssignedEvent() {
+        return assignedEvent;
+    }
+
+    public void setAssignedEvent(FundraisingEvent assignedEvent) {
+        this.assignedEvent = assignedEvent;
+    }
+
+    public List<BoxMoney> getMoneyContents() {
+        return moneyContents;
+    }
+
+    public void setMoneyContents(List<BoxMoney> moneyContents) {
+        this.moneyContents = moneyContents;
+    }
 
     public boolean isEmpty() {
         return moneyContents.isEmpty() ||

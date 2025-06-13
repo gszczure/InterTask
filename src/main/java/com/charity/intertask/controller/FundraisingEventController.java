@@ -12,16 +12,19 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
-@RequiredArgsConstructor
 public class FundraisingEventController {
 
     private final IFundraisingEventService eventService;
+
+    public FundraisingEventController(IFundraisingEventService eventService) {
+        this.eventService = eventService;
+    }
 
     @PostMapping("/events")
     public ResponseEntity<FundraisingEventDto> createEvent(@Valid @RequestBody FundraisingEventDto eventDto) {
         FundraisingEvent createdEvent = eventService.createEvent(eventDto);
 
-        FundraisingEventDto responseDto = FundraisingEventDto.builder()
+        FundraisingEventDto responseDto = new FundraisingEventDto.Builder()
                 .id(createdEvent.getId())
                 .name(createdEvent.getName())
                 .currency(createdEvent.getCurrency())
