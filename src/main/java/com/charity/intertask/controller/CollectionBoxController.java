@@ -61,18 +61,17 @@ public class CollectionBoxController {
     }
 
     @PostMapping("/{id}/money")
-    public ResponseEntity<CollectionBoxDto> addMoneyToBox(
+    public ResponseEntity<String> addMoneyToBox(
             @PathVariable Long id,
             @Valid @RequestBody MoneyDto moneyDto
     ) {
-        CollectionBox box = boxService.addMoneyToBox(id, moneyDto);
+        boxService.addMoneyToBox(id, moneyDto);
+        return ResponseEntity.ok().body(moneyDto.getAmount() + " " +  moneyDto.getCurrency() + " added to box.");
+    }
 
-        CollectionBoxDto responseDto = CollectionBoxDto.builder()
-                .id(box.getId())
-                .assigned(box.getAssignedEvent() != null)
-                .empty(box.isEmpty())
-                .build();
-
-        return ResponseEntity.ok(responseDto);
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteBox(@PathVariable Long id) {
+        boxService.deleteBox(id);
+        return ResponseEntity.ok().build();
     }
 }

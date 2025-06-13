@@ -59,7 +59,7 @@ public class CollectionBoxService {
     }
 
     @Transactional
-    public CollectionBox addMoneyToBox(Long boxId, MoneyDto moneyDto) {
+    public void addMoneyToBox(Long boxId, MoneyDto moneyDto) {
         CollectionBox box = getBoxById(boxId);
 
         if (box.getAssignedEvent() == null) {
@@ -82,6 +82,12 @@ public class CollectionBoxService {
             box.getMoneyContents().add(newMoney);
         }
 
-        return boxRepository.save(box);
+        boxRepository.save(box);
+    }
+
+    @Transactional
+    public void deleteBox(Long id) {
+        CollectionBox box = getBoxById(id);
+        boxRepository.delete(box);
     }
 }
