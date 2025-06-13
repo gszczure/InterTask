@@ -1,6 +1,7 @@
-package com.charity.intertask.service;
+package com.charity.intertask.service.impl;
 
 import com.charity.intertask.model.Currency;
+import com.charity.intertask.service.ICurrencyExchangeService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -9,7 +10,7 @@ import java.util.EnumMap;
 import java.util.Map;
 
 @Service
-public class CurrencyExchangeService {
+public class CurrencyExchangeService implements ICurrencyExchangeService {
 
     private final Map<Currency, Map<Currency, BigDecimal>> exchangeRates;
 

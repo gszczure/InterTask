@@ -3,7 +3,7 @@ package com.charity.intertask.controller;
 import com.charity.intertask.dto.FinancialReportDto;
 import com.charity.intertask.dto.FundraisingEventDto;
 import com.charity.intertask.model.FundraisingEvent;
-import com.charity.intertask.service.FundraisingEventService;
+import com.charity.intertask.service.IFundraisingEventService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class FundraisingEventController {
 
-    private final FundraisingEventService eventService;
+    private final IFundraisingEventService eventService;
 
     @PostMapping("/events")
     public ResponseEntity<FundraisingEventDto> createEvent(@Valid @RequestBody FundraisingEventDto eventDto) {

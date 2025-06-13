@@ -1,4 +1,4 @@
-package com.charity.intertask.service;
+package com.charity.intertask.service.impl;
 
 import com.charity.intertask.dto.CollectionBoxDto;
 import com.charity.intertask.dto.MoneyDto;
@@ -7,6 +7,9 @@ import com.charity.intertask.model.CollectionBox;
 import com.charity.intertask.model.Currency;
 import com.charity.intertask.model.FundraisingEvent;
 import com.charity.intertask.repository.CollectionBoxRepository;
+import com.charity.intertask.service.ICollectionBoxService;
+import com.charity.intertask.service.ICurrencyExchangeService;
+import com.charity.intertask.service.IFundraisingEventService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,11 +22,11 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class CollectionBoxService {
+public class CollectionBoxService implements ICollectionBoxService {
 
     private final CollectionBoxRepository boxRepository;
-    private final FundraisingEventService eventService;
-    private final CurrencyExchangeService currencyExchangeService;
+    private final IFundraisingEventService eventService;
+    private final ICurrencyExchangeService currencyExchangeService;
 
     @Transactional
     public CollectionBox registerBox() {

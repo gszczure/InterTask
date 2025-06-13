@@ -3,7 +3,7 @@ package com.charity.intertask.controller;
 import com.charity.intertask.dto.CollectionBoxDto;
 import com.charity.intertask.dto.MoneyDto;
 import com.charity.intertask.model.CollectionBox;
-import com.charity.intertask.service.CollectionBoxService;
+import com.charity.intertask.service.ICollectionBoxService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CollectionBoxController {
 
-    private final CollectionBoxService boxService;
+    private final ICollectionBoxService boxService;
 
     /**
      * Dodałem zwwracanie DTO przy rejestracji boxa oraz w endpoincie createEvent oraz w assignBoxToEvent gdzie
