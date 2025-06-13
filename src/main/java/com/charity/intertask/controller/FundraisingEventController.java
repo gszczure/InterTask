@@ -1,5 +1,6 @@
 package com.charity.intertask.controller;
 
+import com.charity.intertask.dto.FinancialReportDto;
 import com.charity.intertask.dto.FundraisingEventDto;
 import com.charity.intertask.model.FundraisingEvent;
 import com.charity.intertask.service.FundraisingEventService;
@@ -27,5 +28,11 @@ public class FundraisingEventController {
                 .build();
 
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/financial-report")
+    public ResponseEntity<FinancialReportDto> getFinancialReport() {
+        FinancialReportDto report = eventService.generateFinancialReport();
+        return ResponseEntity.ok(report);
     }
 }
