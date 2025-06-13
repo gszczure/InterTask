@@ -20,7 +20,7 @@ public class CollectionBoxController {
     private final CollectionBoxService boxService;
 
     /**
-     * Dodałem zwwracanie DTO przy rejestracji boxa oraz w endpoincie createEvent oraz w wielu innych gdzie
+     * Dodałem zwwracanie DTO przy rejestracji boxa oraz w endpoincie createEvent oraz w assignBoxToEvent gdzie
      * nie koniecznie trzeba je dawać, ponieważ w treści zadania
      * nie było sprecyzowane co dokładnie powinny zwracać te endpoity.
      * Alternatywnie można zwracać komunikat tekstowy String o pomyślnym zakończeniu operacji.
@@ -73,5 +73,11 @@ public class CollectionBoxController {
     public ResponseEntity<Void> deleteBox(@PathVariable Long id) {
         boxService.deleteBox(id);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{id}/withdraw")
+    public ResponseEntity<String> withdrawFromBox(@PathVariable Long id) {
+        boxService.withdrawFromBox(id);
+        return ResponseEntity.ok().body("Wymiania pomyslnie");
     }
 }

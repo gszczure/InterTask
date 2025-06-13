@@ -4,6 +4,7 @@ import com.charity.intertask.dto.CollectionBoxDto;
 import com.charity.intertask.dto.MoneyDto;
 import com.charity.intertask.model.BoxMoney;
 import com.charity.intertask.model.CollectionBox;
+import com.charity.intertask.model.Currency;
 import com.charity.intertask.model.FundraisingEvent;
 import com.charity.intertask.repository.CollectionBoxRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,6 +23,7 @@ public class CollectionBoxService {
 
     private final CollectionBoxRepository boxRepository;
     private final FundraisingEventService eventService;
+    private final CurrencyExchangeService currencyExchangeService;
 
     @Transactional
     public CollectionBox registerBox() {
@@ -89,5 +92,32 @@ public class CollectionBoxService {
     public void deleteBox(Long id) {
         CollectionBox box = getBoxById(id);
         boxRepository.delete(box);
+    }
+
+    @Transactional
+    public void withdrawFromBox(Long boxId) {
+        CollectionBox box = getBoxById(boxId);
+
+        if (box.getAssignedEvent() == null) {
+            throw new IllegalStateException("Cannot empty an unassigned collection box");
+        }
+
+        FundraisingEvent event = box.getAssignedEvent();
+        Currency targetCurrency = event.getCurrency();
+
+        BigDecimal totalConverted = BigDecimal.ZERO;
+
+        for (BoxMoney money : box.getMoneyContents()) {
+            BigDecimal convertedAmount = currencyExchangeService.convert(
+                    money.getAmount(),
+                    money.getCurrency(),
+                    targetCurrency
+            );
+            totalConverted = totalConverted.add(convertedAmount);
+        }
+
+        event.setBalance(event.getBalance().add(totalConverted));
+
+        box.getMoneyContents().clear();
     }
 }
