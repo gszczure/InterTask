@@ -98,6 +98,7 @@ public class CollectionBoxService implements ICollectionBoxService {
     @Transactional
     public void deleteBox(Long id) {
         CollectionBox box = getBoxById(id);
+        box.getMoneyContents().clear();
         boxRepository.delete(box);
     }
 
