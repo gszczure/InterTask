@@ -290,4 +290,25 @@ class InterTaskApplicationTests {
         assertNotNull(report);
         assertTrue(report.getEvents().isEmpty());
     }
+
+    @Test
+    void deleteBox_WithNonEmptyBox_ShouldRemoveMoneyAndDeleteBox() {
+        nonEmptyBox.setAssignedEvent(event);
+        when(boxRepository.findById(2L)).thenReturn(Optional.of(nonEmptyBox));
+
+        boxService.deleteBox(2L);
+
+        assertTrue(nonEmptyBox.getMoneyContents().isEmpty());
+        verify(boxRepository).delete(nonEmptyBox);
+    }
+
+    @Test
+    void deleteBox_WithEmptyBox_ShouldDeleteBox() {
+        emptyBox.setAssignedEvent(event);
+        when(boxRepository.findById(1L)).thenReturn(Optional.of(emptyBox));
+
+        boxService.deleteBox(1L);
+
+        verify(boxRepository).delete(emptyBox);
+    }
 }
